@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fluxo-metter</title>
+    <link href="libs/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="app/custom.css" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- Barra de menu -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand" href="#">Fluxo-metter</span>
+                <!--<a class="navbar-brand" href="#">Fluxo-metter</a>-->
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav" data-bind='visible: deviceOnOff() == OnOff.OFF'>
+                    <li><a href="#" data-bind='click: setAppMode.bind($data, appModes.IDLE)'>Inicio</a></li>
+                    <li><a href="#" data-bind='click: setAppMode.bind($data, appModes.AUTO)'>Modo Automático</a></li>
+                    <li><a href="#" data-bind='click: setAppMode.bind($data, appModes.MANUAL)'>Modo Manual</a></li>
+                    <li><a href="#" data-bind='click: setAppMode.bind($data, appModes.HISTORY)'>Consultar histórico</a></li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <!-- PANEL IDLE -->
+        <div class="panel panel-primary" data-bind='visible: appMode() == appModes.IDLE'>
+            <div class="panel-heading">
+                <h3 class="panel-title">Acerca del Fluxo-Mettro</h3>
+            </div>
+            <div class="panel-body">
+
+            </div>
+            <div class="panel-footer" >
+            </div>
+        </div>
+
+        <!-- PANEL AUTO -->
+        <div class="panel panel-primary" data-bind='visible: appMode() == appModes.AUTO'>
+            <div class="panel-heading">
+                <h3 class="panel-title">Modo Automático</h3>
+            </div>
+            <!-- formulario -->
+            <div class="panel-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="fmAutoVolume" class="col-xs-2 control-label">Volumen</label>
+                        <div class="col-xs-10">
+                            <input type="number" class="form-control" id="fmAutoVolume" value="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="fmAutoValue" class="col-xs-2 control-label">Valor</label>
+                        <div class="col-xs-10">
+                            <input type="number" class="form-control" id="fmAutoValue" value="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="fmAutoTotal" class="col-xs-2 control-label">Total</label>
+                        <div class="col-xs-10">
+                            <input type="number" class="form-control" id="fmAutoTotal" value="0">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-offset-2 col-xs-10">
+                            <button type="submit" class="btn btn-default" id="fmAutoSend">Activar</button>
+                            <button type="submit" class="btn btn-default" id="fmAutoCancel" >Cancelar</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="panel-footer" id="fmAutoState">Idle</div>
+        </div>
+
+        <!-- PANEL MANUAL -->
+        <div class="panel panel-primary" data-bind='visible: appMode() == appModes.MANUAL'>
+            <div class="panel-heading">
+                <h3 class="panel-title">Modo Manual</h3>
+            </div>
+            <!-- formulario -->
+            <div class="panel-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="fmAutoVolume" class="col-xs-2 control-label">Volumen</label>
+                        <div class="col-xs-10">
+                            <input type="number" class="form-control" id="fmAutoVolume" data-bind='value: volume'>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="fmAutoValue" class="col-xs-2 control-label">Valor</label>
+                        <div class="col-xs-10">
+                            <input type="number" class="form-control" id="fmAutoValue"  data-bind='value: value'>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="fmAutoTotal" class="col-xs-2 control-label">Total</label>
+                        <div class="col-xs-10">
+                            <input type="number" class="form-control" id="fmAutoTotal"  data-bind='value: total'>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-offset-2 col-xs-10">
+                            <button type="submit" class="btn btn-default" id="fmAutoSend"
+                                data-bind="click: sendMQTTMessage.bind($data, 'onOff', 'OFF')">Detener</button>                            
+                            <button type="submit" class="btn btn-default" id="fmAutoSend" 
+                                data-bind="click: sendMQTTMessage.bind($data, 'onOff', 'ON')">Activar</button>
+                            <button type="submit" class="btn btn-default" id="fmAutoCancel">Cancelar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- PANEL HISTORY -->          
+        <div class="panel panel-primary" data-bind='visible: appMode() == appModes.HISTORY'>
+            <div class="panel-heading">
+                <h3 class="panel-title">Registros</h3>
+            </div>
+            <div class="panel-body">
+                    ***
+            </div>
+            <div class="panel-footer">
+            </div>
+        </div>
+    </div>
+
+    <script src="libs/jquery/jquery.min.js"></script>
+    <script src="libs/bootstrap/js/bootstrap.min.js"></script>
+    <script src="libs/mqttws31-min.js"></script>
+    <script src="libs/knockout-3.4.2.js"></script>
+    <script src="app/fluxo-metter.js"></script>
+    
+</body>
+
+</html>
