@@ -7,23 +7,24 @@
 #------------------------------------------
 
 import paho.mqtt.client as mqtt
-from store_Sensor_Data_to_DB import sensor_Data_Handler
+from dataHandler import sensor_Data_Handler
 
 # MQTT Settings 
-MQTT_Broker = "iot.eclipse.org"
+MQTT_Broker = "localhost" # "iot.eclipse.org"
 MQTT_Port = 1883
 Keep_Alive_Interval = 45
-MQTT_Topic = "Home/BedRoom/#"
+MQTT_Topic = "BRAVE/#"
 
 #Subscribe to all Sensors at Base Topic
 def on_connect(mosq, obj, rc):
+	print("Connectado...")
 	mqttc.subscribe(MQTT_Topic, 0)
 
 #Save Data into DB Table
 def on_message(mosq, obj, msg):
 	# This is the Master Call for saving MQTT Data into DB
 	# For details of "sensor_Data_Handler" function please refer "sensor_data_to_db.py"
-	print "MQTT Data Received..."
+	print "MQTT Data Received from... "
 	print "MQTT Topic: " + msg.topic  
 	print "Data: " + msg.payload
 	sensor_Data_Handler(msg.topic, msg.payload)
